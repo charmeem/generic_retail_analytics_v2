@@ -1,0 +1,23 @@
+{% extends 'layout1.html' %}
+
+{% block css %}
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/success.css') }}"
+        type="text/css"
+    />
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="success-wrapper">
+      <h1>OOPS! {{name}} Your email {{mail}} could not be verified</h1>
+      
+      <a href="{{ url_for('main.home') }}">
+          <button>Please Try again</button>
+      </a>
+    </div>
+
+{% endblock %}

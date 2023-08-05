@@ -1,0 +1,46 @@
+<!-------------------------------------------------------------------------------- 
+ This File is used to validate the email address of query received in Contact Form
+--------------------------------------------------------------------------------->
+    
+{% extends 'layout1.html' %}
+
+{% block css %}
+    <title>OTP Verification</title> 
+    
+    <!-- Link to the css file -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/success.css') }}"
+        type="text/css"
+    />
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="success-wrapper center">
+      <h1>Thanks for submitting the form</h1>
+      <form action="{{ url_for('main.verify') }}" method="POST"> 
+      {{ form.csrf_token }}  
+         <h4> OTP has been sent to your email id . Please check your inbox and enter the recieved OTP in the filed below for confirmation.</h4>  
+         <fieldset class="form-field mb-3">
+         {{ form.otp.label }}
+         {{ form.otp }}
+           {% if form.otp.errors %}
+           <ul class="errors">
+             {% for error in form.name.errors %}
+               <li>{{ error }}</li>
+             {% endfor %}
+           </ul>
+           {% endif %}
+         </fieldset>  
+         
+         {{ form.submit }}
+         
+      </form>  
+      
+    </div>
+    
+    
+
+{% endblock %}

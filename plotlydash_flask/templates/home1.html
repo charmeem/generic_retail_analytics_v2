@@ -1,0 +1,187 @@
+
+{% extends 'layout1.html' %}
+
+
+<!-- Custom styles for this template -->
+{% block css %}
+    <!-- <link href="{{ url_for('static', filename='css/one-page-wonder.min.css') }}" rel="stylesheet"> -->
+    <link href="{{ url_for('static', filename='css/one-page-wonder.css') }}" rel="stylesheet">
+{% endblock %}
+
+<!-- Content Block -->
+{% block content %}
+
+
+
+<section>
+  <div class="container mt-5">
+    <div class="row align-items-center">
+      <div class="col-lg-6 order-lg-12">
+        <div class="pb-5 ml-5">
+
+        <video autoplay="autoplay" controls="controls" preload="preload" >
+         <source src="{{ url_for('static', filename='video/demo_video1.mp4') }}" type="video/mp4"></source>
+          Your browser does not support the video tag.
+        </video>
+
+        <!--<iframe src="{{ url_for('static', filename='video/demo_video1.mp4') }}"  frameborder="0" allowfullscreen></iframe> -->
+         <!-- <img class="img-fluid rounded-circle" src="{{ url_for('static', filename = 'img/app1.PNG')}}" alt=""> -->
+        </div>
+      </div>
+      <div class="col-lg-6" id="desc">
+        <div class="pb-5">
+          <h2 class="display-4 heed" > <p>Our Goal</p> </h2>
+          <p class="lead">Our goal is to provide you with actionable insights and a comprehensive understanding of your data, enabling informed decision-making and driving your business forward.
+           </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="py-5">
+          <img class="img-fluid rounded-circle" src= "{{ url_for('static', filename = 'img/app1.PNG')}}" alt="">
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="py-2">
+         <div class="container">
+          <div class="row">
+            <div class="col-md-12 offset-md-2 text-center">
+              <h2 class="display-4 heed">How We Can Help</h2>
+              <p class="lead">At our organization, we offer an analytical approach to unlock insights from your raw data. We meticulously analyze your data using advanced techniques, ensuring a comprehensive understanding of your information.</p>
+              <p class="lead">Here's what our process entails:</p>
+              <ul class="lead">
+                <li>Identifying patterns, outliers, and potential data issues</li>
+                <li>Cleaning, preprocessing, and transforming the data</li>
+                <li>Applying statistical techniques for descriptive and predictive modeling</li>
+                <li>Analyzing important features and deriving meaningful insights</li>
+                <li>Presenting clear and organized findings</li>
+              </ul>
+              <p class="lead">To make data exploration effortless, we create interactive web-based dashboards and reports. These intuitive tools empower you to visualize and explore the data, enabling you to gain valuable insights at a glance.</p>
+            </div>
+          </div>
+        </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 order-lg-12">
+        <div class="p-5">
+          <img class="img-fluid rounded-circle" src="{{ url_for('static', filename = 'img/plot2.PNG')}}" alt="">
+        </div>
+      </div>
+      <div class="col-lg-6" id="demo">
+        <div class="p-2">
+          <h2 class="display-4 heed" > <p> Demo application </p> </h2>
+          <p class="lead">Here in this demo application we have taken Retail Industry as an example.
+          This product is showcase of KPI reports and Graphes related to Merchandising Assortments and consists of various components of a data pipeline, each component is self-contained.
+          This is an easily navigable Multi page Application.
+           </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="jumbotron jumbotron-fluid text-center">
+  <div class="container">
+    <div class="row align-items-center">
+      <h1 class="col-lg-6 display-4">Try our Demo or contact us</h1>
+      <iframe class="col-lg-6" src="{{ url_for('static', filename='video/demo_video1.mp4') }}" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="row align-items-center">
+     <div class="col-lg-6">
+       <a class="btn btn-warning navbar-btn " href="{{ url_for('main.contact') }}">Click</a>
+     </div>
+    </div>
+  </div>
+</div>
+
+
+
+<section>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="p-5">
+          <img class="img-fluid rounded-circle" src="{{ url_for('static', filename = 'img/app1.PNG')}}" alt="">
+        </div>
+      </div>
+      <div class="col-lg-6" id="deep">
+        <div class="p-2">
+          <h2 class="display-4 heed" ><p>Get deeper Insights</p></h2>
+          <p class="lead">By using our customized tool you can be further gain deeper business insights like financial accounting, logistics,
+          customer files and supply chain. Basically, any areas that give you a vertical perspective of your business.
+
+           </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <section>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 order-lg-2">
+          <div class="p-5">
+            <img class="img-fluid rounded-circle" src="{{ url_for('static', filename = 'img/apptab.PNG')}}" alt="">
+          </div>
+        </div>
+        <div class="col-lg-6" id="report">
+          <div class="p-2">
+            <h2 class="display-4 heed" ><p>Heirarchical Reports</p></h2>
+            <p class="lead">One of the feature of our product is: Instanteneous generation of Heirarchical reports of Top KPIs based on Statistical Formulas.
+            The relevent features of the input data are automaticaly presented in form of selectable check boxes thus making
+            report generation very flexible.
+            Upto 10 reports on multiple level and order can be generated simulteneously with a single click.
+             </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <div class="p-5">
+           <img class="img-fluid rounded-circle" src="{{ url_for('static', filename = 'img/plot2.PNG')}}" alt="">
+          </div>
+        </div>
+        <div class="col-lg-6 order-lg-1">
+         <div class="p-2" id="graph">
+           <h2 class="display-4 heed" ><p>Graphical Dashboard</p></h2>
+           <p class="lead">You can select different Graph types like Bar plot, Line graph and Sunburst. All plots accompanied by their respective Tables.
+               Key feature is that on single page multiple graphes can be presented side by side for better comparision.
+           </p>
+          </div>
+        </div>
+       </div>
+     </div>
+   </section>
+
+  <!-- Footer -->
+  <footer class="py-5 bg-black">
+   <div class="container">
+
+     <p class="m-0 text-center text-white small">Copyright &copy; info@piesis.com  2022</p>
+     </div>
+   </footer>
+
+{% endblock %}

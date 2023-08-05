@@ -1,0 +1,5 @@
+
+venv/
+.spyproject/
+__pycache__/
+not_for_git/

@@ -1,0 +1,38 @@
+<!-- Custom Style for this template -->
+<link href="{{ url_for('static', filename='css/nav1.css') }}" rel="stylesheet">
+
+<!-- Hero -->
+<div class="hero-image" >
+
+<!--  <iframe src="{{ url_for('static', filename='video/demo_video1.mp4') }}" frameborder="0" allowfullscreen></iframe> -->
+  <!--<video autoplay="autoplay" controls="controls" preload="preload" >-->
+   <!-- <source src="{{ url_for('static', filename='video/demo_video1.mp4') }}" type="video/mp4"></source>-->
+   <!-- Your browser does not support the video tag.
+  </video>-->
+
+
+  <div class="hero-text mt-5">
+    <h1>Exploratory Data Analysis (EDA) Tool</h1>
+    <p>We analyze and perform data cleaning and transformation of your raw data and provide Data Visualization in form of live dashboards</p>
+    <a class="btn-info p-2" href="{{ url_for('auth_bp.login') }}">Lets Try</a>
+  </div>
+</div>
+
+
+<!-- Hero example 2
+<div class="p-5 text-center bg-image rounded-3" style="
+    background-image: url({{ url_for('static', filename = 'img/appgraph3.png')}});
+    height: 400px;
+    ">
+  <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
+    <div class="d-flex justify-content-center align-items-center h-100">
+      <div class="text-white">
+        <h1 class="mb-3">Heading</h1>
+        <h4 class="mb-3">Subheading</h4>
+        <a class="btn btn-outline-light btn-lg" href="#!" role="button">Call to action</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+-->

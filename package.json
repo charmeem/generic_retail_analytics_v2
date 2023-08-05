@@ -1,0 +1,19 @@
+{
+  "name": "plotlydash_analytics",
+  "version": "1.0.0",
+  "description": "Multipage Dash application:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charmeem/accessretail_analytics.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/charmeem/accessretail_analytics/issues"
+  },
+  "homepage": "https://github.com/charmeem/accessretail_analytics#readme"
+}
