@@ -4,46 +4,10 @@ import dash_bootstrap_components as dbc
 import dash
 # from models import User
 from flask_login import current_user
-
+import json
 def register_callbacks(dash_app):
-     #-------------------------------------------
-    # Authentication implementation, Login etc
-    #------------------------------------------
-    # User status management views
-
-    # Login screen Component
-    login = html.Div([dcc.Location(id='url_login', refresh=True),
-                      html.H2('''Please log in to continue:''', id='h1'),
-                      dcc.Input(placeholder='Enter your username',
-                                type='text', id='uname-box'),
-                      dcc.Input(placeholder='Enter your password',
-                                type='password', id='pwd-box'),
-                      html.Button(children='Login', n_clicks=0,
-                                  type='submit', id='login-button'),
-                      html.Div(children='', id='output-state'),
-                      html.Br(),
-                      dcc.Link('Home', href='/')])
     
-    # Successful login
-    success = html.Div([html.Div([html.H2('Login successful.'),
-                                  html.Br(),
-                                  dcc.Link('Home', href='/')])  # end div
-                        ])  # end div
-    
-    # Failed Login
-    failed = html.Div([html.Div([html.H2('Log in Failed. Please try again.'),
-                                 html.Br(),
-                                 html.Div([login]),
-                                 dcc.Link('Home', href='/')
-                                 ])  # end div
-                       ])  # end div
-    
-    # logout
-    logout = html.Div([html.Div(html.H2('You have been logged out - Please login')),
-                       html.Br(),
-                       dcc.Link('Home', href='/')
-                       ])  # end div
-    
+    print("babloo")
     # Callback function to login the user, or update the screen if the username or password are incorrect
     # DONOT NEED 
     # @dash_app.callback(
@@ -69,9 +33,11 @@ def register_callbacks(dash_app):
     @dash_app.callback(
         # Output('user-status-div', 'children'),  # I donot want to display the link 
         Output('login-status', 'data'),        #saving the user status in session store
-        Input('url', 'pathname')
+        Input('url1', 'pathname'),
+        
         )
     def login_status(url):
+        print("url1",url)
         ''' callback to display login/logout link in the header '''
         
         if hasattr(current_user, 'is_authenticated') and current_user.is_authenticated \
@@ -79,6 +45,7 @@ def register_callbacks(dash_app):
             
             return ( 
                 # dcc.Link('logout', href='/logout'),
+                # print("currentuser2",current_user.get_id()),
                 current_user.get_id()
                     )
         else:
@@ -94,16 +61,24 @@ def register_callbacks(dash_app):
     @dash_app.callback(
                   Output('page-content', 'children'),    #These outputs linked to layout.py File
                   Output('redirect', 'pathname'),
-                  Input('url', 'pathname')
+                  Input('url1', 'pathname'),
+                  
                  )
     def display_page(pathname):
-        # print(dash.page_registry.values())
+        # print("callbackdemo1")
+        ctx = dash.callback_context
+        ctx_msg2 = json.dumps({
+            'states': ctx.states,
+            'triggered': ctx.triggered,
+            'inputs': ctx.inputs,
+        }, indent=2)
+        print(ctx_msg2)
         
         #--------------------------------------------------------
         #                         TopBar
         #    This Section is creating a Multi component NAVBAR
         #--------------------------------------------------------
-
+        
         EXPLAINER1 = """
                          We analyze and perform data cleaning and transformation of your raw data and present in the way you like on
                          a live dashboards. We work in close coperation with the research and Marketing team to develop
@@ -214,9 +189,9 @@ def register_callbacks(dash_app):
         jumbotran = html.Div(
                         dbc.Container(
                             [
-                                html.H1('Multipage Data Analytics Tool/Dashboard', className="display-3"),
+                                html.H1('Welcome to Multipage Retail Data Analytics Tool', className="display-3"),
                                 html.H4(
-                                    "Welcome to our Demo Application, a showcase of some of the Data analytic services we offer",
+                                    "This is a Demo Application, a showcase of some of the Data analytic services we offer",
                                     className="lead",
                                 ),
                                 html.Hr(className="mt-2 mb-5"),
@@ -359,7 +334,7 @@ def register_callbacks(dash_app):
         #         view = login
         #         url = '/login'
         #---------------------------------------------
-        print("pathname",pathname)        
+            
         # Authentication of direct login of these pages DONE IN FLASK routes.py       
         if pathname == '/demo1/report':
             print("googiii",pathname)

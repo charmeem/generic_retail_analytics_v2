@@ -24,20 +24,36 @@ main_bp = Blueprint(
 #-----------------------------------------------------------
 # Home page Dash within Flask
 # Main Route to access Dash App within Flask
-# "/app_1_raw_dash is base pathname defined in init.py
+# "/app_1_raw_dash is base pathname defined in auth.py
 # The authentication is performed in callbacks.py NOT here
 #-----------------------------------------------------------
-@main_bp.route('/dodo')  # this end point name is not important
+@main_bp.route('/retail')  # this end point name 
 @login_required
 def app_1_template():
+    print("y6")
     # if current_user.is_authenticated:
     return redirect('/demo1/')   #base_pathname in init.py file
+
+#-----------------------------------------------------------
+# Home page Dash within Flask
+# Main Route to access Dash App within Flask
+# "/app_1_raw_dash is base pathname defined in auth.py
+# The authentication is performed in callbacks.py NOT here
+#-----------------------------------------------------------
+@main_bp.route('/media')  # this end point name 
+@login_required
+def app_2_template():
+    print("y66")
+    # if current_user.is_authenticated:
+    return redirect('/demo2/')   #base_pathname in init.py file
+
 
 
 # Home page FLASK
 @main_bp.route('/')
 @main_bp.route('/home')
 def home():
+    print("y5")
     """Landing page."""
     return render_template(
         'home1.html',
@@ -155,12 +171,12 @@ def success():
 #-------------------------------------------------------------------------
 # User entry in Database using URL query string
 # Example adding user and email using URL:
-# http://127.0.0.1:5000/database?user=mubashir&email=mmufti@hotmail.com
+# http://127.0.0.1:5000/users?user=mubashir&email=mmufti@hotmail.com
 #-------------------------------------------------------------------------
-@main_bp.route('/database', methods=['GET'])
+@main_bp.route('/users', methods=['GET'])
 def user_records():
     """Create a user via query string parameters.
-    request.args.get fetching  the URL parameters after ? """
+    request.args.get fetches  the URL parameters after ? """
     username = request.args.get('user')
     email = request.args.get('email')
     if username and email:

@@ -15,9 +15,15 @@ class User(UserMixin,db.Model):
         db.Integer,
         primary_key=True
     )
+    appid = db.Column(
+        db.Integer,
+        unique=False,
+        primary_key=False,
+        nullable=False
+    )
     username = db.Column(
         db.String(100),
-        unique=False,
+        unique=True,
         nullable=False
     )
     email = db.Column(
@@ -43,7 +49,12 @@ class User(UserMixin,db.Model):
         unique=False,
         nullable=True
     )
-    
+    admin = db.Column(
+        db.Boolean,
+        index=False,
+        unique=False,
+        nullable=False
+        )
     
     
     def set_password(self, password):

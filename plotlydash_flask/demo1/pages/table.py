@@ -96,17 +96,17 @@ layout=  dbc.Container(
             [
                 jumbotron,
                 
-                dbc.Button("Select Level", id='level_button',style={'display':'none'}), # Button only to be used as dummy in callback below
+                dbc.Button("Select Level", id='level_button2',style={'display':'none'}), # Button only to be used as dummy in callback below
                 
                 dbc.Row([                   
                     dbc.Col(
-                        id='ldd',
+                        id='ldd2',
                         # html.Div(id='ldd'),
                         # width=3,
                         ),
                     dbc.Col(
-                        id='kpidd',
-                        # html.Div(id='kpidd'),
+                        id='kpidd2',
+                        
                         width=3,
                         ),    
                     ],
@@ -114,7 +114,7 @@ layout=  dbc.Container(
                     className='mb-5'
                     ),
                 
-                html.Div(id='table',children=[]),
+                html.Div(id='table2',children=[]),
                 html.Br(),
                 html.Br(),
             ],
@@ -126,12 +126,14 @@ layout=  dbc.Container(
 
 # Generating level dropdown
 @callback(
-    Output('ldd','children'),
-    Output('ldd','width'),             #Want to change ldd col width from 3 to 10
-    Input('level_button','n_clicks')   # Button only to be used as dummy
+    Output('ldd2','children'),
+    Output('ldd2','width'),             #Want to change ldd col width from 3 to 10
+    Input('level_button2','n_clicks'),   # Button only to be used as dummy
+    
     )
 def level_dropdown(click):
-    
+    print("callbackcontext",dash.callback_context)
+    print("chichichi")
     # Calling function, this must be included in the callback function    
     single_level_full = get_log_folders()
     
@@ -139,7 +141,7 @@ def level_dropdown(click):
     if single_level_full:       
         ldd = html.Div([
                 dcc.Dropdown(
-                    id="leveldd",
+                    id="leveldd2",
                     options=[{'label':h,'value':h} for h in single_level_full],
                     # value=single_level_full[0],      # selecting first element of the above list as initial value
                     placeholder="Select level",
@@ -155,9 +157,10 @@ def level_dropdown(click):
 
 # Generating FACTS Drop list dynamicaly based on Heirarchy level selection
 @callback(
-    Output('kpidd','children'),
+    Output('kpidd2','children'),
     # Output('kpi_store','data'),
-    Input('leveldd','value')
+    Input('leveldd2','value'),
+    
     )
 
 def kpi_dropdown(level):
@@ -170,7 +173,7 @@ def kpi_dropdown(level):
                     [
                     # html.Label("Select kpi"),
                     dcc.Dropdown(
-                        id="kpi",
+                        id="kpi2",
                         options=[{'label':k,'value':k} for k in kpi_list_without_us],
                         # value=kpi_list_without_us[0],      # selecting first element of the above list as initial value
                         placeholder="Select KPI",
@@ -183,9 +186,10 @@ def kpi_dropdown(level):
 
 # Creating Dash Table
 @callback(
-    Output('table','children'),
-    Input('kpi','value'),
-    Input('leveldd','value'),
+    Output('table2','children'),
+    Input('kpi2','value'),
+    Input('leveldd2','value'),
+    
     )
 def table_view(fact,level):
     

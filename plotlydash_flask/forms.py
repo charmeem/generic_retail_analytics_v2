@@ -1,13 +1,12 @@
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, SubmitField,PasswordField,IntegerField
-from wtforms.validators import DataRequired,Email,EqualTo,Length,Optional
+from wtforms import StringField, SubmitField,PasswordField,IntegerField,DateField, BooleanField
+from wtforms.validators import DataRequired,Email,EqualTo,Length,Optional,InputRequired
 
 class VerifyForm(FlaskForm):
     otp = IntegerField(
         'Enter OTP (One time password)',
-        [
-            DataRequired()
-        ]
+         validators=[InputRequired()]
+        
     )
     submit = SubmitField('Submit')
 
@@ -15,31 +14,35 @@ class ContactForm(FlaskForm):
     """Contact form."""
     name = StringField(
         'FullName',
-        [DataRequired()]
+        validators=[InputRequired()]
+    )
+    appid = IntegerField(
+        'Appid',
+        validators=[InputRequired()]
     )
     email = StringField(
         'Email',
+        validators=
         [
             Email(message=('Not a valid email address.')),
-            DataRequired()
+            InputRequired()
         ]
     )
     company = StringField(
         'Company Name',
-        [
-            DataRequired()
-        ]
+         validators=[InputRequired()]
+        
     )
     
     body = StringField(
         'Write Message e.g. Send me login password',
+        validators=
         [
-            DataRequired(),
+            InputRequired(),
             Length(min=4,
             message=('Your message is too short.'),
             # placeholder="HI"
-            ),
-            
+            ),            
         ]
     )
     # recaptcha = RecaptchaField()
@@ -49,34 +52,44 @@ class ContactForm(FlaskForm):
 
 class SignupForm(FlaskForm):
     """User Sign-up Form."""
-    name = StringField(
-        'Name',
-        validators=[DataRequired()]
+    username = StringField(
+        'User Name',
+        validators=[
+                    InputRequired()
+                    ]
+    )
+    appid = IntegerField(
+        'Appid',
+        validators=[InputRequired()]
     )
     email = StringField(
         'Email',
         validators=[
             Length(min=6),
             Email(message='Enter a valid email.'),
-            DataRequired()
+            InputRequired()
         ]
     )
     password = PasswordField(
         'Password',
         validators=[
-            DataRequired(),
+            InputRequired(),
             Length(min=6, message='Select a stronger password.')
         ]
     )
     confirm = PasswordField(
         'Confirm Your Password',
         validators=[
-            DataRequired(),
+            InputRequired(),
             EqualTo('password', message='Passwords must match.')
         ]
     )
-    website = StringField(
-        'Website',
+    created_on = DateField(
+        'Created on',
+        validators=[Optional()]
+    )
+    admin = BooleanField(
+        'Admin',
         validators=[Optional()]
     )
     
@@ -88,11 +101,11 @@ class LoginForm(FlaskForm):
     email = StringField(
         'Email',
         validators=[
-            DataRequired(),
+            InputRequired(),
             Email(message='Enter a valid email.')
         ]
     )
-    password = PasswordField('Password', validators=[DataRequired()
+    password = PasswordField('Password', validators=[InputRequired()
         ]
        )
     

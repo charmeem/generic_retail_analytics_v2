@@ -24,12 +24,24 @@
     <form method="POST" action="/signup">
       {{ form.csrf_token }}
 
-      <fieldset class="name">
-        {{ form.name.label }}
-        {{ form.name(placeholder='Mubashir Mufti') }}
-        {% if form.name.errors %}
+      <fieldset class="app">
+        {{ form.appid.label }}
+        {{ form.appid(placeholder='1 or 2') }}
+        {% if form.appid.errors %}
           <ul class="errors">
-            {% for error in form.email.errors %}
+            {% for error in form.appid.errors %}
+              <li>{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </fieldset>
+      
+      
+      <fieldset class="name">
+        {{ form.username.label }}
+        {{ form.username(placeholder='Mubashir Mufti') }}
+        {% if form.username.errors %}
+          <ul class="errors">
+            {% for error in form.username.errors %}
               <li>{{ error }}</li>{% endfor %}
           </ul>
         {% endif %}

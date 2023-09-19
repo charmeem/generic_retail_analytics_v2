@@ -7,6 +7,10 @@
   <h1>Piesis Database Users</h1>
     {% for user in users %}
     <ul id="user.name">
+    <li>
+      <span class="field-name">Appid:</span>
+      <span class="field-value">{{ user.appid }}</span>
+    </li>
       <li>
         <span class="field-name">User:</span>
         <span class="field-value">{{ user.username }}</span>

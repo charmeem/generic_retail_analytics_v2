@@ -1,10 +1,11 @@
 """Initialize Flask app."""
+import sys
+sys.dont_write_bytecode = True
 from flask import Flask
 from dash import Dash
 from flask_assets import Environment
 import dash_bootstrap_components as dbc
 from os import getpid
-import sys
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
@@ -16,9 +17,12 @@ from flask_admin.contrib.sqla import ModelView
 # See lazy_pandas for more detail
 #---------------------------------------------------------------------------
 sys.path.append('plotlydash_flask')
+
 sys.path.append('plotlydash_flask/demo1/')
 sys.path.append('plotlydash_flask/demo1/apps/reports/scripts')
 
+sys.path.append('plotlydash_flask/demo2/')
+sys.path.append('plotlydash_flask/demo2/apps/reports/scripts')
 
 
 def create_app(dash_debug, dash_auto_reload):
@@ -39,8 +43,13 @@ def create_app(dash_debug, dash_auto_reload):
     # For detail explanation See link in Design.py Reference 1 & 6, also stored as a web file in learning/flask/
     #
     # FIRST DASH APP
-    from layout import layout as app_1_layout
-    from callbacks import register_callbacks as app_1_callbacks
+    from demo1.layout import layout as app_1_layout
+    from demo1.callbacks import register_callbacks as app_1_callbacks
+    
+    # SECOND DASH APP
+    from demo2.layout import layout as app_2_layout
+    from demo2.callbacks import register_callbacks as app_2_callbacks
+    
     # Create Dash app 1 'demo1' within Flask object
     register_dash_app(
         flask_server=app,
@@ -52,20 +61,17 @@ def create_app(dash_debug, dash_auto_reload):
         dash_auto_reload=dash_auto_reload
     )
     
-    # SECOND DASH APP
-    # from layout2 import layout as app_2_layout
-    # from callbacks2 import register_callbacks as app_2_callbacks
     
     # Create Dash app 2 'demo2' within Flask object
-    # register_dash_app(
-    #     flask_server=app,
-    #     title='App 2',
-    #     base_pathname='demo2',
-    #     layout=app_2_layout,
-    #     register_callbacks_funcs=[app_2_callbacks],
-    #     dash_debug=dash_debug,
-    #     dash_auto_reload=dash_auto_reload
-    # )
+    register_dash_app(
+        flask_server=app,
+        title='App 2',
+        base_pathname='demo2',
+        layout=app_2_layout,
+        register_callbacks_funcs=[app_2_callbacks],
+        dash_debug=dash_debug,
+        dash_auto_reload=dash_auto_reload
+    )
     
     
     #Calling register_extensions functions 
@@ -79,30 +85,51 @@ def create_app(dash_debug, dash_auto_reload):
     # if running on gunicorn with multiple workers this message should print once for each worker if preload_app is set to False
     print(f'Flask With Dash Apps Built Successfully with PID {str(getpid())}.')
     
+    
     return app
     
 def register_dash_app(flask_server, title, base_pathname, layout, register_callbacks_funcs, dash_debug, dash_auto_reload):
-    
+    print("base_pathname",base_pathname)
     # Meta tags for viewport responsiveness
     meta_viewport = {"name": "viewport", "content": "width=device-width, initial-scale=1, shrink-to-fit=no"}
     
-    # Creating Dash object within Flask server
-    my_dash_app = Dash(
-        __name__,
-        server=flask_server,
-        # url_base_pathname=f'/{base_pathname}/',
-        # requests_pathname_prefix=f'/{base_pathname}/',
-        routes_pathname_prefix=f'/{base_pathname}/',
-        # assets_folder=get_root_path(__name__) + '/static/',
-        meta_tags=[meta_viewport],
-        pages_folder='.',
-        use_pages=True,                          #Allow to build multipages app, see pages folder
-        suppress_callback_exceptions=True,
-        external_stylesheets=[dbc.themes.MINTY],
-    )
+    #If condition to allow builtin page functionality only for demo1
+    if base_pathname == "demo1":
+        
+        # Creating Dash object within Flask server
+        my_dash_app = Dash(
+            __name__,
+            server=flask_server,
+            # url_base_pathname=f'/{base_pathname}/',
+            # requests_pathname_prefix=f'/{base_pathname}/',
+            routes_pathname_prefix=f'/{base_pathname}/',
+            # assets_folder=get_root_path(__name__) + '/static/',
+            meta_tags=[meta_viewport],
+            pages_folder='.',
+            use_pages=True,                          #Allow to build multipages app, see pages folder
+            # suppress_callback_exceptions=True,
+            external_stylesheets=[dbc.themes.MINTY],
+        )
+        
+    elif base_pathname == "demo2":
+        # print("base_pathname",base_pathname)
+        # Creating Dash object within Flask server
+        my_dash_app = Dash(
+            __name__,
+            server=flask_server,
+            # url_base_pathname=f'/{base_pathname}/',
+            # requests_pathname_prefix=f'/{base_pathname}/',
+            routes_pathname_prefix=f'/{base_pathname}/',
+            # assets_folder=get_root_path(__name__) + '/static/',
+            meta_tags=[meta_viewport],
+            # pages_folder='.',
+            # use_pages=True,                          #Allow to build multipages app, see pages folder
+            # suppress_callback_exceptions=True,
+            external_stylesheets=[dbc.themes.MINTY],)
     
     #Following Flask Factory Patteren
     with flask_server.app_context():
+        print("Title",title)
         my_dash_app.title = title
         my_dash_app.layout = layout
         my_dash_app.css.config.serve_locally = True
@@ -110,6 +137,7 @@ def register_dash_app(flask_server, title, base_pathname, layout, register_callb
         
         #Calling callback functions in main callback.py file
         # This will create landing page of our Dash app
+        
         for call_back_func in register_callbacks_funcs:
             call_back_func(my_dash_app)
               
