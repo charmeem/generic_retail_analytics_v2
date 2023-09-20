@@ -48,7 +48,7 @@ def signup():
         
     form = SignupForm()
     if form.validate_on_submit():
-        print("hiiiiiiiiiiiiiii")
+        
         #check if user email or user is already created
         existing_user = User.query.filter(User.username==form.username.data).first()
         existing_email = User.query.filter(User.email==form.email.data ).first()
@@ -61,7 +61,7 @@ def signup():
             flash('A user already exists ')
         elif existing_email:
             return make_response(
-                    f'{form.email.data} already created!'
+                    f'{form.email.data} already in use!'
                 )
             flash('email already exists .')    
             
@@ -145,6 +145,8 @@ def page_not_found(e):
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
+    print("queryallll",User.query.all())
+    print("kokokoko",User.query.filter_by(appid="1").all()) 
     """
     Log-in page for registered users.
 
@@ -160,15 +162,24 @@ def login():
     form = LoginForm()
     # Validate login attempt
     if form.validate_on_submit():
-        user = User.query.filter_by(email==form.email.data).first()
+        user = User.query.filter(User.email==form.email.data).first()
+        user_id = user.appid
         
-        print("USERRRR",user)
+        
+        
         #check_password is a function defined in model,py file
-        if user and user.check_password(password==form.password.data):
+        if user and user.check_password(form.password.data):
             login_user(user)
             next_page = request.args.get('next')
             # REturning to the Dash App after the successfull login
-            return redirect(next_page or url_for('main.app_1_template'))
+            
+            # print("toto",User.query.filter(User.appid==form.appid.data))
+            
+            if user_id == 1:
+                return redirect(next_page or url_for('main.app_1_template'))
+            else:
+                return redirect(next_page or url_for('main.app_2_template'))
+            
         flash('Invalid username/password combination')
         return redirect(url_for('auth_bp.login'))
     return render_template(
