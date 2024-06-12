@@ -189,18 +189,6 @@ jsonpointer==2.1
 jsonschema==4.19.0
 jsonschema-specifications @ file:///C:/b/abs_0brvm6vryw/croot/jsonschema-specifications_1699032417323/work
 julius==0.2.7
-jupyter==1.0.0
-jupyter-console==6.6.3
-jupyter-events==0.7.0
-jupyter-lsp @ file:///C:/b/abs_ecle3em9d4/croot/jupyter-lsp-meta_1699978291372/work
-jupyter_client==7.4.9
-jupyter_core==5.3.1
-jupyter_server @ file:///C:/b/abs_7esjvdakg9/croot/jupyter_server_1699466495151/work
-jupyter_server_terminals @ file:///C:/b/abs_ec0dq4b50j/croot/jupyter_server_terminals_1686870763512/work
-jupyterlab @ file:///home/conda/feedstock_root/build_artifacts/jupyterlab_1692015883666/work
-jupyterlab-pygments @ file:///tmp/build/80754af9/jupyterlab_pygments_1601490720602/work
-jupyterlab-widgets==3.0.8
-jupyterlab_server @ file:///C:/b/abs_e08i7qn9m8/croot/jupyterlab_server_1699555481806/work
 keras==2.9.0
 Keras-Preprocessing==1.1.2
 keyring @ file:///C:/b/abs_dbjc7g0dh2/croot/keyring_1678999228878/work
