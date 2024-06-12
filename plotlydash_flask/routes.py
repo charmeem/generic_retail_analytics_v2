@@ -15,14 +15,14 @@ import random as rand
 
 # Blueprint Configuration
 main_bp = Blueprint(
-    'main',                 #We have given new name to this Blueprint just for fun
+    'main',                 #We have given new name to this Blueprint just for fun it is actualy routes.main_bp
     __name__,
     template_folder='templates',
     static_folder='static'
 )
 
 #-----------------------------------------------------------
-# Home page Dash within Flask
+# Home page Dash within Flask -  Retail 
 # Main Route to access Dash App within Flask
 # "/app_1_raw_dash is base pathname defined in auth.py
 # The authentication is performed in callbacks.py NOT here
@@ -30,22 +30,32 @@ main_bp = Blueprint(
 @main_bp.route('/retail')  # this end point name 
 @login_required
 def app_1_template():
-    print("y6")
     # if current_user.is_authenticated:
     return redirect('/demo1/')   #base_pathname in init.py file
 
 #-----------------------------------------------------------
-# Home page Dash within Flask
+# Home page Dash within Flask -- Media
 # Main Route to access Dash App within Flask
-# "/app_1_raw_dash is base pathname defined in auth.py
+# "/app_2_raw_dash is base pathname defined in auth.py
 # The authentication is performed in callbacks.py NOT here
 #-----------------------------------------------------------
 @main_bp.route('/media')  # this end point name 
 @login_required
 def app_2_template():
-    print("y66")
     # if current_user.is_authenticated:
     return redirect('/demo2/')   #base_pathname in init.py file
+
+#-----------------------------------------------------------
+# Home page Dash within Flask -- Media
+# Main Route to access Dash App within Flask
+# "/app_3_raw_dash is base pathname defined in auth.py
+# The authentication is performed in callbacks.py NOT here
+#-----------------------------------------------------------
+@main_bp.route('/tools')  # this end point name 
+@login_required
+def app_3_template():
+    # if current_user.is_authenticated:
+    return redirect('/demo3/')   #base_pathname in init.py file
 
 
 
@@ -53,7 +63,6 @@ def app_2_template():
 @main_bp.route('/')
 @main_bp.route('/home')
 def home():
-    print("y5")
     """Landing page."""
     return render_template(
         'home1.html',

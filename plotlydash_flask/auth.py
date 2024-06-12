@@ -17,23 +17,6 @@ auth_bp = Blueprint(
     static_folder='static'
 )
 
-# @auth_bp.route('/app_1')
-# # @main_bp.route('/app_1_raw_dash')
-# @login_required
-# def app_1_template():
-#     # return render_template('dash.html', dash_url='/app_1_raw_dash/')
-#     return flask.redirect('/app_1_raw_dash')
-
-# @auth_bp.errorhandler(IntegrityError)
-# def handle_integrity_error(e):
-#     # Customize the error message as needed
-#     error_message = "Username already exists. Please choose a different one."
-    
-#     # You can also log the error for debugging purposes
-#     # app.logger.error(str(e))
-
-#     # Return a JSON response with the error message and a 400 status code
-#     return jsonify({'error': error_message}), 400
 
 """ Creating Users via SIGNUP FORM """
 @auth_bp.route('/signup', methods=['GET', 'POST'])
@@ -145,15 +128,13 @@ def page_not_found(e):
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    print("queryallll",User.query.all())
-    print("kokokoko",User.query.filter_by(appid="1").all()) 
     """
     Log-in page for registered users.
 
     GET requests serve Log-in page.
     POST requests validate and redirect user to dashboard.
     """
-    print("currentuser",current_user.get_id())
+    
     # Bypass login process if user is already logged in
     if current_user.is_authenticated:
         return redirect(url_for('main.app_1_template'))
@@ -177,8 +158,10 @@ def login():
             
             if user_id == 1:
                 return redirect(next_page or url_for('main.app_1_template'))
-            else:
+            elif user_id == 2:
                 return redirect(next_page or url_for('main.app_2_template'))
+            else:
+                return redirect(next_page or url_for('main.app_3_template'))
             
         flash('Invalid username/password combination')
         return redirect(url_for('auth_bp.login'))
@@ -193,6 +176,7 @@ def login():
 # Returning back to home page flask
 @auth_bp.route('/app_1_raw_dash/logout/')
 @auth_bp.route('/app_2_raw_dash/logout/')
+@auth_bp.route('/app_3_raw_dash/logout/')
 @login_required
 def logout():
     logout_user()

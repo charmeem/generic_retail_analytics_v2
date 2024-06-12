@@ -285,7 +285,8 @@ select:focus {
 label,
 legend {
   display: block;
-  margin-bottom: 0px; }
+  margin-bottom: 0px;
+  margin-right: 3rem; }
 fieldset {
   padding: 0;
   border-width: 0; }
@@ -492,14 +493,11 @@ there.
 /*            My Custom CSS              */
 /* ------------------------------------- */
 
-/* #new_row{
-    margin: 0 auto;
-} */
-
-/* .btn-primary{
-    border-color:#ffb703!important;
-    background-color:#ef233c!important;
-} */
+/*For searched keyword highlighter*/
+.highlight {
+  background-color: yellow;
+  font-weight: bold;
+}
 
 /* Class for jumbotron */
 .lead {
@@ -641,4 +639,76 @@ button:hover{
     .btn-lg {
             width: 240px!important; 
             }      
+}
+
+/*Shiny Button on Dash main page for demo2 app*/
+.jumbotron-blue {
+    /*background-color: #364F6B;*/
+    background-color: #FE7A36;
+    border-radius: 5px;
+    background-image: linear-gradient(to top, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+}
+
+
+/* Option B: Light Text on Dark Background */
+.contrast-button {
+    background-color: #D04848 !important;
+    color: #ffffff !important;
+    
+}
+
+.contrast-button {
+    font-size: 18px;  /* Adjust font size as needed */
+    border: none;   /* Remove button border for a cleaner look */
+    border-radius:5px;
+    text-align: center !important;
+}
+
+.convert-button{
+    font-size: 18px;  /* Adjust font size as needed */
+    border: none;   /* Remove button border for a cleaner look */
+    border-radius:5px;
+    text-align: center !important;
+    background-color: #3E363F !important;
+    color: #ffffff !important;
+}
+/*For the Analytic page dropdowns
+
+.dropdown-container {
+    position: relative;  # Allow absolute positioning for label
+}
+
+.dropdown-label {
+    position: absolute;
+    top: 5px;  # Adjust label position
+    left: 5px;
+    opacity: 0.5;  # Adjust label visibility
+    color: gray;  # Style the label text
+}
+
+.dropdown:hover + .dropdown-label {
+    display: block;  # Show label on hover
+}
+*/
+
+
+
+        
+.DateRangePickerInput__withBorder {
+    border: none;
+} 
+
+
+.ag-grid-cell-content .highlighted-keyword {
+  background-color: yellow;
+}
+
+
+/* This is to contain the video within video player body thanks to geminipro */
+.modal-body video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }

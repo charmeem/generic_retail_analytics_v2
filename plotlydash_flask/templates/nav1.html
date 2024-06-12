@@ -18,18 +18,14 @@
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Data Insights
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="{{ url_for('main.app_1_template') }}">Retail Industry</a>
-          <!-- main.app_1_template is blueprint for routes.py and named as main -->     
-          <a class="dropdown-item" href="{{ url_for('main.app_2_template') }}">News Media</a>
-          
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> 
+          <a class="dropdown-item" href="{{ url_for('main.app_1_template') }}">Retail Industry</a> <!--translates to generating the URL for the route named app_1_template defined within the blueprint named main-->             
+          <a class="dropdown-item" href="{{ url_for('main.app_2_template') }}">News Media</a>  
+          <a class="dropdown-item" href="{{ url_for('main.app_3_template') }}">Tools</a>    
         </div>
       </li>
       <li class="nav-item"><a class="btn btn-orange navbar-btn ml-3 mt-1" href="{{ url_for('main.contact') }}">Contact Us</a></li> 
       </ul>
-      
-      
-      
     </div>
   </div>
 </nav>

@@ -132,8 +132,7 @@ layout=  dbc.Container(
     
     )
 def level_dropdown(click):
-    print("callbackcontext",dash.callback_context)
-    print("chichichi")
+    
     # Calling function, this must be included in the callback function    
     single_level_full = get_log_folders()
     

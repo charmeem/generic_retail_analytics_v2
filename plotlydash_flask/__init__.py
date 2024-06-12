@@ -8,6 +8,7 @@ import dash_bootstrap_components as dbc
 from os import getpid
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from dash_extensions.enrich import DashProxy,ServersideOutputTransform
 
 #--------------------------------------------------------------------------
 # Importing supporting scripts
@@ -22,10 +23,14 @@ sys.path.append('plotlydash_flask/demo1/')
 sys.path.append('plotlydash_flask/demo1/apps/reports/scripts')
 
 sys.path.append('plotlydash_flask/demo2/')
-sys.path.append('plotlydash_flask/demo2/apps/reports/scripts')
+sys.path.append('plotlydash_flask/demo2/apps')
+
+sys.path.append('plotlydash_flask/demo3/')
+sys.path.append('plotlydash_flask/demo3/apps')
 
 
 def create_app(dash_debug, dash_auto_reload):
+    
     """Construct core Flask application with embedded Dash app."""
     app = Flask(__name__, instance_relative_config=False)
     
@@ -42,13 +47,17 @@ def create_app(dash_debug, dash_auto_reload):
     # Callbacks and layouts are organized into seperate files
     # For detail explanation See link in Design.py Reference 1 & 6, also stored as a web file in learning/flask/
     #
-    # FIRST DASH APP
+    # FIRST DASH APP - Retail 
     from demo1.layout import layout as app_1_layout
     from demo1.callbacks import register_callbacks as app_1_callbacks
     
-    # SECOND DASH APP
+    # SECOND DASH APP - Media
     from demo2.layout import layout as app_2_layout
     from demo2.callbacks import register_callbacks as app_2_callbacks
+    
+    # Third DASH APP - Tools
+    from demo3.layout import layout as app_3_layout
+    from demo3.callbacks import register_callbacks as app_3_callbacks
     
     # Create Dash app 1 'demo1' within Flask object
     register_dash_app(
@@ -73,6 +82,17 @@ def create_app(dash_debug, dash_auto_reload):
         dash_auto_reload=dash_auto_reload
     )
     
+    # Create Dash app 3 'demo3' within Flask object
+    register_dash_app(
+        flask_server=app,
+        title='App 3',
+        base_pathname='demo3',
+        layout=app_3_layout,
+        register_callbacks_funcs=[app_3_callbacks],
+        dash_debug=dash_debug,
+        dash_auto_reload=dash_auto_reload
+    )
+    
     
     #Calling register_extensions functions 
     # like db, mail, login related codes
@@ -89,7 +109,8 @@ def create_app(dash_debug, dash_auto_reload):
     return app
     
 def register_dash_app(flask_server, title, base_pathname, layout, register_callbacks_funcs, dash_debug, dash_auto_reload):
-    print("base_pathname",base_pathname)
+    
+    
     # Meta tags for viewport responsiveness
     meta_viewport = {"name": "viewport", "content": "width=device-width, initial-scale=1, shrink-to-fit=no"}
     
@@ -107,10 +128,11 @@ def register_dash_app(flask_server, title, base_pathname, layout, register_callb
             meta_tags=[meta_viewport],
             pages_folder='.',
             use_pages=True,                          #Allow to build multipages app, see pages folder
-            # suppress_callback_exceptions=True,
+            suppress_callback_exceptions=True,
             external_stylesheets=[dbc.themes.MINTY],
+            
         )
-        
+    
     elif base_pathname == "demo2":
         # print("base_pathname",base_pathname)
         # Creating Dash object within Flask server
@@ -124,20 +146,39 @@ def register_dash_app(flask_server, title, base_pathname, layout, register_callb
             meta_tags=[meta_viewport],
             # pages_folder='.',
             # use_pages=True,                          #Allow to build multipages app, see pages folder
-            # suppress_callback_exceptions=True,
-            external_stylesheets=[dbc.themes.MINTY],)
+            suppress_callback_exceptions=True,
+            external_stylesheets=[dbc.themes.MINTY],
+            # transforms=[ServersideOutputTransform()]
+            )
+        
+    elif base_pathname == "demo3":
+        # print("base_pathname",base_pathname)
+        # Creating Dash object within Flask server
+        my_dash_app = Dash(
+            __name__,
+            server=flask_server,
+            # url_base_pathname=f'/{base_pathname}/',
+            # requests_pathname_prefix=f'/{base_pathname}/',
+            routes_pathname_prefix=f'/{base_pathname}/',
+            # assets_folder=get_root_path(__name__) + '/static/',
+            meta_tags=[meta_viewport],
+            # pages_folder='.',
+            # use_pages=True,                          #Allow to build multipages app, see pages folder
+            suppress_callback_exceptions=True,
+            external_stylesheets=[dbc.themes.MINTY],
+            # transforms=[ServersideOutputTransform()]
+            )    
     
-    #Following Flask Factory Patteren
+    #Contexts: Following Flask Factory Patteren
     with flask_server.app_context():
-        print("Title",title)
         my_dash_app.title = title
         my_dash_app.layout = layout
         my_dash_app.css.config.serve_locally = True
         my_dash_app.enable_dev_tools(debug=dash_debug,dev_tools_hot_reload=dash_auto_reload )
         
-        #Calling callback functions in main callback.py file
-        # This will create landing page of our Dash app
         
+        #Calling callback functions in main callback.py file
+        # This will create landing page of our Dash app       
         for call_back_func in register_callbacks_funcs:
             call_back_func(my_dash_app)
               
@@ -196,9 +237,11 @@ def register_extensions(app):
 
     # Registers a function to be run BEFORE THE FIRST REQUEST to this instance of the application
     # Without this the DATABASE was not creating
-    @app.before_first_request
-    def create_tables():
-        db.create_all()   # Create sql tables for our data models
+    # THIS IS DEPRECATED IN FLASK
+    #----------------------------------------------------
+    # @app.before_first_request
+    # def create_tables():
+    #     db.create_all()   # Create sql tables for our data models
     
     # Old method NOT WORKING
     # with app.app_context():

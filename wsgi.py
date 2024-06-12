@@ -2,6 +2,7 @@
 from plotlydash_flask import create_app  #__init__.py FILE
 from config import Config
 
+
 # app object is created in __init__.py file 
 # where Flask object is created.
 # create_app()

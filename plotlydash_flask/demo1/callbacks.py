@@ -5,9 +5,9 @@ import dash
 # from models import User
 from flask_login import current_user
 import json
-def register_callbacks(dash_app):
-    
-    print("babloo")
+
+
+def register_callbacks(dash_app):    
     # Callback function to login the user, or update the screen if the username or password are incorrect
     # DONOT NEED 
     # @dash_app.callback(
@@ -72,7 +72,6 @@ def register_callbacks(dash_app):
             'triggered': ctx.triggered,
             'inputs': ctx.inputs,
         }, indent=2)
-        print(ctx_msg2)
         
         #--------------------------------------------------------
         #                         TopBar
@@ -337,7 +336,6 @@ def register_callbacks(dash_app):
             
         # Authentication of direct login of these pages DONE IN FLASK routes.py       
         if pathname == '/demo1/report':
-            print("googiii",pathname)
             view=report_layout
         elif pathname == '/demo1/plot':
             view=plot_layout

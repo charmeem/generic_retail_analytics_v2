@@ -199,7 +199,7 @@ def other_tables(kpi,geog,heichy,FACTS_PATH):
     
     # removing () from first column
     final1[heichy]=final1[heichy].str.replace(heichy[0:2],'',regex=True).str.replace('(','',regex=True).str.replace(')','',regex=True)
-    
+    print("finalhei",final1[heichy])
     # Rounding the wave columns- the column two onwards
     #Decimal rounding
     d=3
