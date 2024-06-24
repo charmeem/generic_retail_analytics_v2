@@ -13,7 +13,7 @@ import psycopg2
 from psycopg2 import sql
 import pandas as pd
 from rapidfuzz import fuzz
-from demo2.apps import search               # INclude Search layout on TOP of general layout
+from demo2.apps import search               # Search layout
 from demo2.apps import analytics            # Analytics page of demo2 application
 import os
 import plotly.express as px
@@ -21,10 +21,10 @@ import plotly.graph_objects as go
 import re
 from dash import dash_table
 import dash_ag_grid as dag
-import dash_player as player
-
 
 def register_callbacks(dash_app):
+    
+    
     
     
     #---------------------------------------------------------------------------------
@@ -86,19 +86,14 @@ def register_callbacks(dash_app):
         # Output('keyword-store', 'data'),         # Not needed now
         ],        
         [Input("search-button", "n_clicks"),
-         Input('date-picker-range', 'value'),
-         # Input('date-picker-range', 'start_date'),
-         # Input('date-picker-range', 'end_date'),
+         Input('date-picker-range', 'start_date'),
+         Input('date-picker-range', 'end_date'),
          Input('radio_search',"value")           # selecting search type
          ],
         [State("search-input", "value")]
     )
-    def fetch_data(n_clicks,value,radios,keyword):
-        
-        # print("value",value)
-        start_date = value[0]
-        end_date = value[1]
-        
+    def fetch_data(n_clicks,start_date,end_date,radios,keyword):
+        print("start",start_date)
         # Check if Dates are selected
         if keyword and not start_date:
             # print("please select the date")
@@ -113,7 +108,7 @@ def register_callbacks(dash_app):
         # Dynamic placehoder
         #----------------------
         search_type = radios
-        if search_type== 'Single search':
+        if search_type== 'Soft search':
             new_placeholder = f"Enter single keyword like : Allah"
         else:
             new_placeholder = f"Try Entering multiple words with or without , seperation like : Allah,Great"
@@ -134,7 +129,7 @@ def register_callbacks(dash_app):
                 dfc = df.copy()  # Avoid modifying original DataFrame
                 
                 # Selected Columns for Table
-                dfs = dfc[['Date','Hour','Timestamp','Text','Program','Speakers','image_link','media_link']]
+                dfs = dfc[['Date','Hour','Timestamp','Text','Speakers','image_link','media_link']]
                 
                 # Selected Columns for Search - we donot want searching on all columns!
                 dfss = dfc[['Text','Speakers']]
@@ -220,7 +215,7 @@ def register_callbacks(dash_app):
                 #-------------------------------------------------------
                 # Selecting the search method based on the  radio button
                 #--------------------------------------------------------          
-                if search_type == 'Single search':
+                if search_type == 'Soft search':
                     filtered_df_rows = fuzzy_search(keyword, date_range_df)
                 else:
                     filtered_df_rows = combined_search(keyword, date_range_df)
@@ -274,11 +269,7 @@ def register_callbacks(dash_app):
                 # Define a list of columns where you want to enable filtering
                 filterable_columns = ['Text']  
                 
-                # -------------------------------------------------------
                 # Dynamically create columnDefs with filtering for specified columns
-                # 1. MAnaging Javascript renderer for thumbnails
-                # 2. Hiding media_link as it is redundane in the table
-                # --------------------------------------------------------
                 
                 # # OLD Code for single renderer only
                 # columnDefs = [
@@ -295,10 +286,8 @@ def register_callbacks(dash_app):
                 columnDefs = [
                                 {
                                     "field": col,
-                                    "headerName": col.replace('image_link', 'Media') if col == 'image_link' else col,  # Rename 'image_link' column
                                     "filter": True if col in filterable_columns else False,
-                                    "cellRenderer": "ImgThumbnail" if col == 'image_link' or col=='media_link' else "Highlight" if col in filterable_columns else None,
-                                    "hide": True if col == 'media_link' else False  # hide media_link column
+                                    "cellRenderer": "ImgThumbnail" if col == 'image_link' or col=='media_link' else "Highlight" if col in filterable_columns else None
                                 } for col in filtered_df_rows.columns
                             ]
                 
@@ -315,16 +304,13 @@ def register_callbacks(dash_app):
                         # columnSize="autoSize",
                         columnSize="sizeToFit",
                         columnSizeOptions={
-                            'defaultMinWidth': 118,
-                            'columnLimits': [{'key': 'Text', 'minWidth': 600},
-                                             {'key': 'Timestamp', 'minWidth': 155},
-                                             {'key': 'Hour', 'minWidth': 118},
-                                             {'key': 'Media', 'minWidth': 115}
-                                             ],
+                            'defaultMinWidth': 120,
+                            'columnLimits': [{'key': 'Text', 'minWidth': 650},
+                                             {'key': 'Timestamp', 'minWidth': 160},
+                                             {'key': 'Hour', 'minWidth': 120}],
                         },
                         
                     )
-                
                 
                 # tab.data takes out the props tag of stored table 
                 return grid,new_placeholder,""
@@ -339,122 +325,29 @@ def register_callbacks(dash_app):
         # Initially display loading indicator
         return html.Div("Loading...")
     
+    
     #---------------------------------------------------------------
-    # Layouts and Callbacks for Thumbnail Modal image
-    # Utilizing dash-player
-    # Simple video player didnot work- it was only playing the first video
+    # Callbacks for Thumbnail Modal image
     #-------------------------------------------------------------------
-    
     @dash_app.callback(
-        Output("selected_video_url", "value"),
-        Output("custom-component-img-modal", "is_open"),
-        Input("agrid_table", "cellRendererData"),
-        Input("close-modal", "n_clicks"),
-        State("selected_video_url", "value"),
+    Output("custom-component-img-modal", "is_open"),
+    Output("custom-component-img-modal", "children"),
+    Input("agrid_table", "cellRendererData"),
     )
-    def update_modal(data, n_clicks, selected_video_url):
-        ctx = dash.callback_context
-        if ctx.triggered:
-            triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
-    
-            if triggered_id == "close-modal":
-                return selected_video_url, False
-    
+    def show_change(data):
+        print("dataaaaaa",data)
         if data:
-            video_url = f"{data['value']['value']}"  # Adjust this URL
-            return video_url, True
-    
-        return selected_video_url, False
-    
-    @dash_app.callback(
-        Output("modal-video-content", "children"),
-        Input("selected_video_url", "value"),
-        )
-    def update_video_content(selected_video_url):
-        if selected_video_url:
-            return html.Div(
-                
-                [
-                    player.DashPlayer(
-                        id='video-player',
-                        url=selected_video_url, 
-                        controls=True,
-                        playing=True,
-                        volume=0.9,
-                        seekTo=6000,                       
-                        style={"width": "100%","height":'auto'}
-                    )
-                ],
-                
-            )
-        return None
-    
-    # @dash_app.callback(
-    #     Output('confirm-dialog', 'displayed'),
-    #     Input("close-modal", "n_clicks"),
-    #     )
-    # def display_confirm(click):
-    #     if click:
-    #         return True
-    #     return False
-
-    
-    # @dash_app.callback(
-    #     Output('video-player', 'playing'),
-    #     [Input('confirm-dialog', 'submit_n_clicks')]
-    # )
-    # def update_player_status(sclick):
-    #     # print("playing",playing)
-    #     print("sclick",sclick)
-    #     if sclick:
-    #         print("parooooooo")
-    #         return False;
+            # Construct the video URL using the media server's base URL and the media link
+            video_url = f"{data['value']['value']}"  # Assuming 'media_link' is the column name for video URLs
             
-    #     else:
-    #         return 'Player is paused or not ready'
-    
-    # #---------------------------------------------------------------
-    # # Callbacks for Thumbnail Modal image
-    # # Working BUT ONLY first Video connectionReset after that 
-    # #-------------------------------------------------------------------
-    # @dash_app.callback(
-    #     Output("selected_video_url", "value"),
-    #     Output("custom-component-img-modal", "is_open"),
-    #     Input("agrid_table", "cellRendererData"),
-    #     Input("close-modal", "n_clicks"),
-    #     State("selected_video_url", "value"),
-    # )
-    # def update_modal(data, n_clicks, selected_video_url):
-    #     ctx = dash.callback_context
-    #     if ctx.triggered:
-    #         triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
-    
-    #         if triggered_id == "close-modal":
-    #             return selected_video_url, False
-    
-    #     if data:
-    #         video_url = f"{data['value']['value']}"  # Adjust this URL
-    #         return video_url, True
-    
-    #     return selected_video_url, False
-    
-    # @dash_app.callback(
-    #     Output("modal-video-content", "children"),
-    #     Input("selected_video_url", "value"),
-    # )
-    # def update_video_content(selected_video_url):
-    #     if selected_video_url:
-    #         return html.Div(
-    #             [
-    #                 html.Video(
-    #                     id="video-player", 
-    #                     src=selected_video_url, 
-    #                     controls=True, 
-    #                     style={"width": "100%", "height": "400px"}
-    #                 )
-    #             ]
-    #         )
-    #     return None
+            print("Videoooooooooo",video_url)
+            
+            return True, html.Video(
+                src=video_url,
+                controls=True,
+                style={"width": "100%", "height": "auto"},
+            )
+        return False, None
 
     
     #---------------------------------------------------------------
@@ -479,15 +372,13 @@ def register_callbacks(dash_app):
     # CALLBACK TO SET TOPIC OPTIONS
     @dash_app.callback(
         Output('topic-filter', 'options'),
-        Input('segment-filter','value')
+        Input('date-filter','value')
         )
-    def set_topic_options(choosen_segment):
+    def set_topic_options(choosen_date):
         
         # Selecting segments from  choosen date
-        dff = df[df.Hour == choosen_segment]
-        print("dff.program",dff.Program)
+        dff = df[df.Date == choosen_date]
         topics = list(dff['Program'].unique())
-        print(topics)
         return [{'label': t, 'value': t} for t in topics]
    
  
@@ -506,16 +397,11 @@ def register_callbacks(dash_app):
             )
     def update_graph(selected_date, selected_segment):
         
-        
         # We have built a grouped df for the graph pupsoses
-        #
-        # media1_grouped1.csv
-        #
-        # This file is built in script : ptv_transcription_7_analytics.ipynb
+        # e.g. demo3_speaker_grouped.csv
         #
         # Combine path components (assuming dataset folder is one level down)
-        filepath_speaker = os.path.join(base_dir, "dataset", "media1_grouped1.csv")
-        
+        filepath_speaker = os.path.join(base_dir, "dataset", "demo3_grouped1.csv")
         # Read the CSV file
         df = pd.read_csv(filepath_speaker)
         
@@ -554,12 +440,10 @@ def register_callbacks(dash_app):
     def update_graph(selected_date, selected_segment,selected_topic):
         
         # We have built a grouped df for the graph pupsoses
-        # media1_grouped1.csv
-        #
-        # # This file is built in script : ptv_transcription_7_analytics.ipynb
+        # e.g. demo3_speaker_grouped.csv
         #
         # Combine path components (assuming dataset folder is one level down)
-        filepath_speaker = os.path.join(base_dir, "dataset", "media1_grouped1.csv")
+        filepath_speaker = os.path.join(base_dir, "dataset", "demo3_grouped1.csv")
         # Read the CSV file
         df = pd.read_csv(filepath_speaker)
                

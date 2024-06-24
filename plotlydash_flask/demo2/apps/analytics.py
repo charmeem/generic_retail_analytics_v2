@@ -69,7 +69,7 @@ def format_time(seconds):
 # Layout components
 #---------------------
 layout =  html.Div([ 
-            html.H1(' Data Analytics ', className="display-3"),
+            html.H1(' Data Analytics ', className="display-3 mt-5"),
             
             dbc.Container([
                 
@@ -93,7 +93,7 @@ layout =  html.Div([
                             dcc.Dropdown(
                                 id='segment-filter',
                                 options=[],
-                                value=None  # Initially show all dates
+                                value=None  # Initially show alltime segments
                                 )], md=4),
                         dbc.Col(
                             [

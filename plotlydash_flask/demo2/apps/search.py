@@ -48,14 +48,15 @@ layout = dmc.MantineProvider(
                               
                             dmc.DatePicker(
                             id="date-picker-range",
-                            label="Date Range",
-                            description="Select a date range",
+                            label="Select a date range",
+                            # description="Select a date range",
                             minDate=date(2020, 8, 5),
                             type="range",
                             value=[datetime.now().date(), datetime.now().date() + timedelta(days=5)],
-                            maw=300,
+                            maw=400,
+                            # style={'fontSize': '20rem'}
                         ),
-                        dmc.Space(h=10),
+                        dmc.Space(h=20),
                         dmc.Text(id="selected-date-input-range-picker"),
                         ]
                       ),
@@ -72,6 +73,7 @@ layout = dmc.MantineProvider(
                             ['Single search', 'Multiple match'],
                             'Single search',
                             id="radio_search",
+                            style={'fontFamily':'Open Sans'},
                             inline=True,
                         ),
                     ],
@@ -92,11 +94,11 @@ layout = dmc.MantineProvider(
                             style={ 'fontSize': '20px'}
                         ),
                     ],
-                    className="d-md-flex justify-content-center"
+                    className="d-md-flex justify-content-center mb-5"
                 ),
-                                   
-             dbc.Container(                
-                 [ 
+                                    
+             # dbc.Container(                
+                 # [ 
                     dbc.Row(
                        [
                         dbc.Col(
@@ -117,8 +119,8 @@ layout = dmc.MantineProvider(
                         ),
                      ],
                    ),   
-                ]
-             ),
+                # ],
+             # ),
         
         # dcc.Input(id='update-trigger', type='text', value='initial', style={'display': 'none'}),
         # html.Div(id="highlight-trigger", style={"display": "none"}),
